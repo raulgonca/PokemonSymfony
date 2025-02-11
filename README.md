@@ -24,3 +24,5 @@ El que pierde, sufre la presión social y miradas de soslayo por ser un bicho pe
 
 Queremos ver a qué pokemon se ha enfrentado y el resultado del enfrentamiento.
 
+<img src="./img/modeloer.png">
+
