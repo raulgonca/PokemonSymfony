@@ -8,13 +8,20 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div class="container">
+    <h1> Bienvenido a Pokemon en Symfony</h1>
+    <p> Bienvenido  {{ app.user.username }}. </p>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/Álvaro/Documents/Repositorios/symfony-template/src/Controller/MainController.php</code></li>
-        <li>Your template at <code>C:/Users/Álvaro/Documents/Repositorios/symfony-template/templates/main/index.html.twig</code></li>
-    </ul>
+    <a href="{{ path('app_pokemon_index') }}">Ir a la página de Pokémon</a>
+    <br><br>
+    <a href="{{ path('app_capture') }}">Cazar un pokemon</a>
+    <br><br>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('app_pokemon_new') }}">Crear un nuevo Pokémon</a>
+    {% endif %}
+
 </div>
+
+
 {% endblock %}

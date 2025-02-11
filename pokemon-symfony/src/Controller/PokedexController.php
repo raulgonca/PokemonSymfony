@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Pokedex;
+use App\Entity\Pokemon;
 use App\Form\PokedexType;
 use App\Repository\PokedexRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/pokedex')]
-final class PokedexController extends AbstractController{
+final class PokedexController extends AbstractController
+{
     #[Route(name: 'app_pokedex_index', methods: ['GET'])]
     public function index(PokedexRepository $pokedexRepository): Response
     {
@@ -40,6 +42,39 @@ final class PokedexController extends AbstractController{
             'form' => $form,
         ]);
     }
+
+    // Funcion que intenta capturar un pokemon
+    #[Route('/catch/{id}', name: 'app_pokedex_catch', methods: ['GET'])]
+    public function catch(Pokemon $pokemon, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        // El pokemon tiene un 60% de probabilidad de captura
+        $probabilidad = rand(0, 100);
+
+        $resultado = 'fracaso'; // Creo una variable para mostrar el resultado de la captura
+
+        if ($probabilidad <= 60) {
+
+            $pokedex = new Pokedex();
+            $pokedex->setUser($this->getUser());
+            $pokedex->setPokemon($pokemon);
+            $pokedex->setPokemonLevel(1);
+            $pokedex->setPokemonStrength(10);
+
+            $entityManager->persist($pokedex);
+            $entityManager->flush();
+
+            $resultado = 'exito';
+        }
+        // return $this->render('main/capture.html.twig');
+        return $this->redirectToRoute(
+            'app_capture',
+            ['resultado' => $resultado]
+        );
+    }
+
+
+
+
 
     #[Route('/{id}', name: 'app_pokedex_show', methods: ['GET'])]
     public function show(Pokedex $pokedex): Response
@@ -70,7 +105,7 @@ final class PokedexController extends AbstractController{
     #[Route('/{id}', name: 'app_pokedex_delete', methods: ['POST'])]
     public function delete(Request $request, Pokedex $pokedex, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$pokedex->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $pokedex->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($pokedex);
             $entityManager->flush();
         }
