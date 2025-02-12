@@ -12,7 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/pokedex')]
-final class PokedexController extends AbstractController{
+final class PokedexController extends AbstractController
+{
     #[Route(name: 'app_pokedex_index', methods: ['GET'])]
     public function index(PokedexRepository $pokedexRepository): Response
     {
@@ -67,10 +68,19 @@ final class PokedexController extends AbstractController{
         ]);
     }
 
+    #[Route('/{id}/train', name: 'app_pokedex_train', methods: ['GET', 'POST'])]
+    public function train(Pokedex $pokedex, EntityManagerInterface $entityManager): Response
+    {
+        $pokedex->setPokemonStrength($pokedex->getPokemonStrength() + 10);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_pokedex_show', ['id' => $pokedex->getId()], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}', name: 'app_pokedex_delete', methods: ['POST'])]
     public function delete(Request $request, Pokedex $pokedex, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$pokedex->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $pokedex->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($pokedex);
             $entityManager->flush();
         }

@@ -1,26 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Fight{% endblock %}
+{% block title %}Batalla{% endblock %}
 
 {% block body %}
-    <h1>Fight</h1>
+    <h1>Batalla</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ fight.id }}</td>
-            </tr>
-            <tr>
-                <th>Winner</th>
-                <td>{{ fight.winner }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <p>Tu oponente: {{ fight.enemyPokemon.name }}</p>    
+    <p>Ganador: {{ fight.winner }}</p>
 
-    <a href="{{ path('app_fight_index') }}">back to list</a>
+    <a href="{{ path('app_main') }}">Volver al inicio</a>
 
-    <a href="{{ path('app_fight_edit', {'id': fight.id}) }}">edit</a>
-
-    {{ include('fight/_delete_form.html.twig') }}
 {% endblock %}
