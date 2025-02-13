@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{% block title %}Pokedex{% endblock %}
+{% block body %}
+<style>
+    /* Estilo para el contenedor principal */
+    .pokemon-container {
+        display: flex; /* Habilita Flexbox */
+        flex-wrap: wrap; /* Permite que los elementos se ajusten en múltiples filas si no caben */
+        gap: 1rem; /* Espacio entre los Pokémon */
+       
+    }
+
+    /* Estilo para cada carta de Pokémon */
+    .card {
+        margin: 1rem;
+        display: flex;
+        flex-direction: column; 
+        align-items: center; 
+        text-align: center; 
+        width: 150px; 
+        height: 150px;
+    }
+
+    .card-body {
+        border: 1px solid black;
+        padding: 1rem;
+        width: 100%; /* Asegura que el cuerpo ocupe todo el ancho de la carta */
+    }
+
+    .card img {
+        width: 100%; /* Ajusta la imagen al ancho de la carta */
+        height: auto; /* Mantiene la proporción de la imagen */
+    }
+</style>
+
+<div class="container">
+    <a href="{{ path('app_main') }}">Inicio</a>
+    <h1>Aquí podrás ver los Pokémon que has capturado!!</h1>
+
+    <!-- Contenedor principal para los Pokémon -->
+    <div class="pokemon-container">
+        {% for pokedex in pokedexes %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ pokedex.pokemon.name }}</h5>
+                <p class="card-text">Tipo: {{ pokedex.pokemon.type }}</p>
+                <p class="card-text">Pokedex Nº: {{ pokedex.pokemon.number }}</p>
+                <img src="{{ asset('uploads/images/' ~ pokedex.pokemon.image) }}" alt="{{ pokedex.pokemon.name }}" />
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

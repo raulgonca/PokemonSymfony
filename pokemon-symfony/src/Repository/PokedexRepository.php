@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Pokedex;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\User;
 
 /**
  * @extends ServiceEntityRepository<Pokedex>
@@ -40,4 +41,16 @@ class PokedexRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findPokedexesByUser(User $user): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.user = :user') 
+            ->setParameter('user', $user) 
+            ->addOrderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult(); 
+    }
+    
+    
 }
