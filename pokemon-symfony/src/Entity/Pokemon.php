@@ -33,6 +33,9 @@ class Pokemon
     #[ORM\Column]
     private ?int $number = null;
 
+    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+    private ?self $pokemon_evolution = null;
+
     public function __construct()
     {
         $this->pokedexes = new ArrayCollection();
@@ -117,6 +120,18 @@ class Pokemon
     public function setNumber(int $number): static
     {
         $this->number = $number;
+
+        return $this;
+    }
+
+    public function getPokemonEvolution(): ?self
+    {
+        return $this->pokemon_evolution;
+    }
+
+    public function setPokemonEvolution(?self $pokemon_evolution): static
+    {
+        $this->pokemon_evolution = $pokemon_evolution;
 
         return $this;
     }
