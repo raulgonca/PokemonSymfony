@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Pokemon;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,6 +20,13 @@ class PokemonType extends AbstractType
             ->add('name')
             ->add('type')
             ->add('number')
+            // Evolucion que tendrá el pokemon
+            ->add('pokemon_evolution', EntityType::class, [
+                'class' => Pokemon::class,
+                'choice_label' => 'name',
+                'required' => false,
+                'placeholder' => 'Selecciona una evolución',
+            ])
             //hacer cambios para elegir la foto del pokemon
             ->add('image', FileType::class, [
                 'label' => 'Image ',
@@ -40,7 +48,7 @@ class PokemonType extends AbstractType
                     ])
                 ],
             ])
-            
+
         ;
     }
 

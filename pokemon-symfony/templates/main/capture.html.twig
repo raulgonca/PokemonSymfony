@@ -11,29 +11,27 @@
 <div class="example-wrapper">
 
     <h1>Hierba alta</h1>
-    <a href="/pokemon/showRandomPokemon">Mostrar pokemon</a>
+    <a href="/pokemon/showRandomPokemon">Mostrar un nuevo pokemon</a>
 
         {# Mostrar pokemon a capturar #}
         {% if pokemon is defined %}
-        <h1>Un pokemon apareció</h1>
-        <p>Nombre: {{ pokemon.name }}</p>
-        <p>Tipo: {{ pokemon.type }}</p>
+            <h1>Un pokemon apareció</h1>
+            <p>Nombre: {{ pokemon.name }}</p>
+            <p>Tipo: {{ pokemon.type }}</p>
 
-        <a href="/pokedex/catch/{{ pokemon.id }}"> Lanzar pokeball (60% captura) </a>
-        </br>
-        <a href="/capture"> Dejar </a>
+            <a href="/pokedex/catch/{{ pokemon.id }}"> Lanzar pokeball (60% captura) </a>
+            </br>
+            <a href="/capture"> Dejar </a>
+        {% endif %}
 
         {# Mostrar resultado #}
         {% if resultado is defined %}
             {% if resultado == 'exito' %}
-                <p class="success">¡Has capturado al Pokémon exitosamente!</p>
+                <p class="success">¡Has capturado un {{pokedex.pokemon.name}}! 🙂</p>
             {% elseif resultado == 'fracaso' %}
-                <p class="failure">No has podido capturar al Pokémon. ¡Intenta de nuevo!</p>
+                <p class="failure">El pokemon ha escapado... ☹️</p>
             {% endif %}
         {% endif %}
-
-
-    {% endif %}
 
 </div>
 {% endblock %}
