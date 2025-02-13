@@ -18,8 +18,8 @@ final class PokedexController extends AbstractController
     #[Route(name: 'app_pokedex_index', methods: ['GET'])]
     public function index(PokedexRepository $pokedexRepository): Response
     {
-        return $this->render('pokedex/index.html.twig', [
-            'pokedexes' => $pokedexRepository->findAll(),
+        return $this->render('main/capturados.html.twig', [
+            'pokedexes' => $pokedexRepository->findPokedexesByUser( $this->getUser() ),
         ]);
     }
 

@@ -3,6 +3,21 @@
 {% block title %}Pokemon index{% endblock %}
 
 {% block body %}
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        padding: 15px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+</style>
+
+<a href="{{ path('app_main') }}">Inicio</a>
+
     <h1>Pokemon index</h1>
 
     <table class="table">
@@ -13,29 +28,36 @@
                 <th>Type</th>
                 <th>Image</th>
                 <th>Number</th>
-                <th>actions</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th>actions</th>
+                {% endif %}
+                
             </tr>
         </thead>
         <tbody>
-        {% for pokemon in pokemon %}
+            {% for pokemon in pokemon %}
             <tr>
                 <td>{{ pokemon.id }}</td>
                 <td>{{ pokemon.name }}</td>
                 <td>{{ pokemon.type }}</td>
-                <td>{{ pokemon.image }}</td>
+                <td> <img src="{{ asset('uploads/images/' ~ pokemon.image) }}" alt="image" width="150" height="150"></td>
                 <td>{{ pokemon.number }}</td>
                 <td>
-                    <a href="{{ path('app_pokemon_show', {'id': pokemon.id}) }}">show</a>
-                    <a href="{{ path('app_pokemon_edit', {'id': pokemon.id}) }}">edit</a>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('app_pokemon_show', {'id': pokemon.id}) }}">show</a>
+                        <a href="{{ path('app_pokemon_edit', {'id': pokemon.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
-        {% else %}
+            {% else %}
             <tr>
                 <td colspan="6">no records found</td>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_pokemon_new') }}">Create new</a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('app_pokemon_new') }}">Create new</a>
+    {% endif %}
 {% endblock %}
