@@ -17,8 +17,6 @@ final class MainController extends AbstractController
         ]);
     }
 
-
-
     // Ir a la vista capture.html.twig
     #[Route('/capture', name: 'app_capture')]
     public function capture(): Response
