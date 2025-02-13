@@ -27,15 +27,12 @@ class Pokedex
     #[ORM\Column]
     private ?int $pokemonStrength = null;
 
-    /**
-     * @var Collection<int, Fight>
-     */
-    #[ORM\OneToMany(targetEntity: Fight::class, mappedBy: 'userPokedex')]
-    private Collection $fights;
+ 
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
 
     public function __construct()
     {
-        $this->fights = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,32 +88,14 @@ class Pokedex
         return $this;
     }
 
-    /**
-     * @return Collection<int, Fight>
-     */
-    public function getFights(): Collection
+    public function getStatus(): ?string
     {
-        return $this->fights;
+        return $this->status;
     }
 
-    public function addFight(Fight $fight): static
+    public function setStatus(string $status): static
     {
-        if (!$this->fights->contains($fight)) {
-            $this->fights->add($fight);
-            $fight->setUserPokedex($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFight(Fight $fight): static
-    {
-        if ($this->fights->removeElement($fight)) {
-            // set the owning side to null (unless already changed)
-            if ($fight->getUserPokedex() === $this) {
-                $fight->setUserPokedex(null);
-            }
-        }
+        $this->status = $status;
 
         return $this;
     }

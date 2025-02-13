@@ -33,16 +33,9 @@ class Pokemon
     #[ORM\Column]
     private ?int $number = null;
 
-    /**
-     * @var Collection<int, Fight>
-     */
-    #[ORM\OneToMany(targetEntity: Fight::class, mappedBy: 'enemyPokemon')]
-    private Collection $fights;
-
     public function __construct()
     {
         $this->pokedexes = new ArrayCollection();
-        $this->fights = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -128,33 +121,4 @@ class Pokemon
         return $this;
     }
 
-    /**
-     * @return Collection<int, Fight>
-     */
-    public function getFights(): Collection
-    {
-        return $this->fights;
-    }
-
-    public function addFight(Fight $fight): static
-    {
-        if (!$this->fights->contains($fight)) {
-            $this->fights->add($fight);
-            $fight->setEnemyPokemon($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFight(Fight $fight): static
-    {
-        if ($this->fights->removeElement($fight)) {
-            // set the owning side to null (unless already changed)
-            if ($fight->getEnemyPokemon() === $this) {
-                $fight->setEnemyPokemon(null);
-            }
-        }
-
-        return $this;
-    }
 }
