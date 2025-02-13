@@ -146,5 +146,4 @@ final class PokemonController extends AbstractController
 
         return $this->redirectToRoute('app_pokemon_index', [], Response::HTTP_SEE_OTHER);
     }
-    
 }

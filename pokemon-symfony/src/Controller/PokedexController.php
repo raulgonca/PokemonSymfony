@@ -43,6 +43,7 @@ final class PokedexController extends AbstractController
         ]);
     }
 
+
     #[Route('/{id}', name: 'app_pokedex_show', methods: ['GET'])]
     public function show(Pokedex $pokedex): Response
     {
