@@ -18,8 +18,8 @@ final class PokedexController extends AbstractController
     #[Route(name: 'app_pokedex_index', methods: ['GET'])]
     public function index(PokedexRepository $pokedexRepository): Response
     {
-        return $this->render('pokedex/index.html.twig', [
-            'pokedexes' => $pokedexRepository->findAll(),
+        return $this->render('main/capturados.html.twig', [
+            'pokedexes' => $pokedexRepository->findPokedexesByUser( $this->getUser() ),
         ]);
     }
 
@@ -100,6 +100,44 @@ final class PokedexController extends AbstractController
             'pokedex' => $pokedex,
             'form' => $form,
         ]);
+    }
+
+     // Funcion que intenta capturar un pokemon
+     #[Route('/catch/{id}', name: 'app_pokedex_catch', methods: ['GET'])]
+     public function catch(Pokemon $pokemon, Request $request, EntityManagerInterface $entityManager): Response
+     {
+         // El pokemon tiene un 60% de probabilidad de captura
+         $probabilidad = rand(0, 100);
+ 
+         $resultado = 'fracaso'; // Creo una variable para mostrar el resultado de la captura
+ 
+         if ($probabilidad <= 60) {
+ 
+             $pokedex = new Pokedex();
+             $pokedex->setUser($this->getUser());
+             $pokedex->setPokemon($pokemon);
+             $pokedex->setPokemonLevel(1);
+             $pokedex->setPokemonStrength(10);
+ 
+             $entityManager->persist($pokedex);
+             $entityManager->flush();
+ 
+             $resultado = 'exito';
+         }
+         // return $this->render('main/capture.html.twig');
+         return $this->redirectToRoute(
+             'app_capture',
+             ['resultado' => $resultado]
+         );
+     }
+
+    #[Route('/{id}/train', name: 'app_pokedex_train', methods: ['GET', 'POST'])]
+    public function train(Pokedex $pokedex, EntityManagerInterface $entityManager): Response
+    {
+        $pokedex->setPokemonStrength($pokedex->getPokemonStrength() + 10);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_pokedex_show', ['id' => $pokedex->getId()], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}', name: 'app_pokedex_delete', methods: ['POST'])]
