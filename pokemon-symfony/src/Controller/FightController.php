@@ -25,6 +25,7 @@ final class FightController extends AbstractController
         ]);
     }
 
+
     #[Route('/new', name: 'app_fight_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
