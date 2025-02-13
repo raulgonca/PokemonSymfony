@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Fight;
 use App\Form\Fight1Type;
+use App\Form\FightType;
 use App\Repository\FightRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +27,7 @@ final class FightController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $fight = new Fight();
-        $form = $this->createForm(Fight1Type::class, $fight);
+        $form = $this->createForm(FightType::class, $fight);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,7 +54,7 @@ final class FightController extends AbstractController
     #[Route('/{id}/edit', name: 'app_fight_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Fight $fight, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(Fight1Type::class, $fight);
+        $form = $this->createForm(FightType::class, $fight);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
