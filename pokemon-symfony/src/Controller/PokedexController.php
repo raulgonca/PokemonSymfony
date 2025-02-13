@@ -77,7 +77,7 @@ final class PokedexController extends AbstractController
         $probabilidad = rand(0, 100);
 
         $resultado = 'fracaso'; // Creo una variable para mostrar el resultado de la captura
-
+        $pokedex = new Pokedex();
         if ($probabilidad <= 60) {
 
             $pokedex = new Pokedex();

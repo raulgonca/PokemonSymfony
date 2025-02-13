@@ -66,9 +66,12 @@ final class FightController extends AbstractController
 
             $result = $userPokemonLevel * $userPokemonStrength - $enemyPokemon->getPokemonLevel() * $enemyPokemon->getPokemonStrength();
 
+            // Comprobar resultado
             if ($result > 0) {
                 $fight->setWinner($userPokedex->getId());
                 $userPokedex->setPokemonLevel($userPokemonLevel + 1);
+                // Compruebo si el pokemon debe evolucionar
+                $this->checkAndEvolvePokemon($userPokedex, $pokemonRepository);
             } else {
                 $fight->setWinner($enemyPokemon->getId());
             }
@@ -85,6 +88,18 @@ final class FightController extends AbstractController
             'fight' => $fight,
             'form' => $form,
         ]);
+    }
+
+    // Funcion para comprobar y evolucionar el pokemon
+    public function checkAndEvolvePokemon(Pokedex $pokedex, PokemonRepository $pokemonRepository): void
+    {
+        if ($pokedex->getPokemonLevel() == 10 || $pokedex->getPokemonLevel() == 20) {
+            // Saco el pokemon nuevo (al que se va a evolucionar)
+            if ($newPokemon = $pokedex->getPokemon()->getPokemonEvolution()) {
+                // Modifico pokedex original con el campo del pokemon nuevo
+                $pokedex->setPokemon($newPokemon);
+            }
+        }
     }
 
 
