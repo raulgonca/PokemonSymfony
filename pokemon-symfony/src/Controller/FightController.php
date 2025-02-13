@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Fight;
+use App\Entity\Pokedex;
 use App\Form\Fight1Type;
 use App\Form\FightType;
 use App\Repository\FightRepository;
+use App\Repository\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +45,49 @@ final class FightController extends AbstractController
         ]);
     }
 
+    #[Route('/new/ai', name: 'app_fight_new_ai', methods: ['GET', 'POST'])]
+    public function newFightAI(Request $request, EntityManagerInterface $entityManager, PokemonRepository $pokemonRepository): Response
+    {
+        $fight = new Fight();
+        $form = $this->createForm(FightType::class, $fight);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $userPokedex = $fight->getPokedexPlayerOne();
+
+            $userPokemonLevel = $userPokedex->getPokemonLevel();
+            $userPokemonStrength = $userPokedex->getPokemonStrength();
+
+            $enemyPokemon = new Pokedex();
+            $enemyPokemon->setPokemon($pokemonRepository->find(rand(1, 151)));
+            $enemyPokemon->setPokemonLevel(1);
+            $enemyPokemon->setPokemonStrength(pokemonStrength: rand(0, 5));
+
+            $result = $userPokemonLevel * $userPokemonStrength - $enemyPokemon->getPokemonLevel() * $enemyPokemon->getPokemonStrength();
+
+            if ($result > 0) {
+                $fight->setWinner($userPokedex->getId());
+                $userPokedex->setPokemonLevel($userPokemonLevel + 1);
+            } else {
+                $fight->setWinner($enemyPokemon->getId());
+            }
+
+            $entityManager->persist($fight);
+            $entityManager->flush();
+
+            return $this->render('fight/result_combat.html.twig', [
+                'fight' => $fight,
+            ]);
+        }
+
+        return $this->render('fight/new.html.twig', [
+            'fight' => $fight,
+            'form' => $form,
+        ]);
+    }
+
+
     #[Route('/{id}', name: 'app_fight_show', methods: ['GET'])]
     public function show(Fight $fight): Response
     {
@@ -72,7 +117,7 @@ final class FightController extends AbstractController
     #[Route('/{id}', name: 'app_fight_delete', methods: ['POST'])]
     public function delete(Request $request, Fight $fight, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$fight->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $fight->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($fight);
             $entityManager->flush();
         }
