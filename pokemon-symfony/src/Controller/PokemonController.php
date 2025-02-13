@@ -12,7 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/pokemon')]
-final class PokemonController extends AbstractController{
+final class PokemonController extends AbstractController
+{
     #[Route(name: 'app_pokemon_index', methods: ['GET'])]
     public function index(PokemonRepository $pokemonRepository): Response
     {
@@ -39,6 +40,27 @@ final class PokemonController extends AbstractController{
             'pokemon' => $pokemon,
             'form' => $form,
         ]);
+    }
+
+    // Método que busca un pokemon al azar de la base de datos y lo devuelve a la vista
+    #[Route('/showRandomPokemon', name: 'app_show_random_pokemon', methods: ['GET'])]
+    public function random(PokemonRepository $pokemonRepository): Response
+    {
+
+        // Obtener todos los Pokémon de la base de datos
+        $listaPokemon = $pokemonRepository->findAll();
+
+        // Indice random para sacar pokemon random
+        $randomIndex = random_int(0, count($listaPokemon) - 1);
+        $pokemon = $listaPokemon[$randomIndex];
+
+        return $this->render('main/capture.html.twig', [
+            'pokemon' => $pokemon,
+        ]);
+
+        // return $this->redirectToRoute('app_capture', [
+        //     'pokemon' => $pokemon,
+        // ]);
     }
 
     #[Route('/{id}', name: 'app_pokemon_show', methods: ['GET'])]
@@ -70,7 +92,7 @@ final class PokemonController extends AbstractController{
     #[Route('/{id}', name: 'app_pokemon_delete', methods: ['POST'])]
     public function delete(Request $request, Pokemon $pokemon, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$pokemon->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $pokemon->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($pokemon);
             $entityManager->flush();
         }
