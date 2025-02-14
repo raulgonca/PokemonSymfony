@@ -129,4 +129,16 @@ final class PokedexController extends AbstractController
 
         return $this->redirectToRoute('app_pokedex_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+    #[Route('/{id}/uplevel', name: 'app_pokedex_uplevel', methods: ['GET', 'POST'])]
+    public function upLevel(Pokedex $pokedex, EntityManagerInterface $entityManager, )
+    {
+        $pokedex->setPokemonLevel($pokedex->getPokemonLevel() + 1);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
+
+
+    }
 }

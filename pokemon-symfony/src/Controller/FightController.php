@@ -66,17 +66,25 @@ final class FightController extends AbstractController
             $userPokemonLevel = $userPokedex->getPokemonLevel();
             $userPokemonStrength = $userPokedex->getPokemonStrength();
 
+            $allPokemons = $pokemonRepository->findAll();
+            $pokemon = $allPokemons[array_rand($allPokemons)];
+
+            $enemyPokemon = new Pokedex();
+            $enemyPokemon->setPokemon($pokemon);
+            $enemyPokemon->setPokemonLevel(1);
+            $enemyPokemon->setPokemonStrength(rand(0, 5));
+            $enemyPokemon->setStatus('sano');
+
             $entityManager->persist($enemyPokemon);
             $entityManager->flush();
 
             $fight->setPokedexPlayerTwo($enemyPokemon);
 
-            $result = ($userPokemonLevel * $userPokemonStrength) - ($enemyPokemon->getPokemonLevel() * $enemyPokemon->getPokemonStrength());
+            $result = (($userPokemonLevel * $userPokemonStrength)) - (($enemyPokemon->getPokemonLevel() * $enemyPokemon->getPokemonStrength()));
 
             // Comprobar resultado
             if ($result > 0) {
                 $fight->setWinner($userPokedex->getId());
-                $userPokedex->setPokemonLevel($userPokemonLevel + 1);
                 $userPokedex->setStatus('sano');
                 $enemyPokemon->setStatus('malherido');
             } else {
@@ -85,6 +93,7 @@ final class FightController extends AbstractController
                 $enemyPokemon->setStatus('sano');
             }
 
+            // Guardar los cambios en la BD
             // Guardar los cambios en la BD
             $entityManager->persist($fight);
             $entityManager->flush();
@@ -121,6 +130,16 @@ final class FightController extends AbstractController
             'enemyPokemon' => $fight->getPokedexPlayerTwo()->getPokemon(),
         ]);
     }
+    #[Route('/fight/result/{id}', name: 'app_fight_result')]
+    public function fightResult(Fight $fight): Response
+    {
+        return $this->render('fight/result_combat.html.twig', [
+            'fight' => $fight,
+            'userPokemon' => $fight->getPokedexPlayerOne()->getPokemon(),
+            'enemyPokemon' => $fight->getPokedexPlayerTwo()->getPokemon(),
+        ]);
+    }
+
 
     #[Route('/{id}', name: 'app_fight_show', methods: ['GET'])]
     public function show(Fight $fight): Response
