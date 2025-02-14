@@ -108,6 +108,17 @@ final class PokedexController extends AbstractController
         return $this->redirectToRoute('app_pokedex_show', ['id' => $pokedex->getId()], Response::HTTP_SEE_OTHER);
     }
 
+    public function checkAndEvolvePokemon(Pokedex $pokedex): void
+    {
+        if ($pokedex->getPokemonLevel() == 10 || $pokedex->getPokemonLevel() == 20) {
+            // Saco el pokemon nuevo (al que se va a evolucionar)
+            if ($newPokemon = $pokedex->getPokemon()->getPokemonEvolution()) {
+                // Modifico pokedex original con el campo del pokemon nuevo
+                $pokedex->setPokemon($newPokemon);
+            }
+        }
+    }
+
     #[Route('/{id}', name: 'app_pokedex_delete', methods: ['POST'])]
     public function delete(Request $request, Pokedex $pokedex, EntityManagerInterface $entityManager): Response
     {
