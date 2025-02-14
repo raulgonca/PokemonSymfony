@@ -1,63 +1,113 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Pokemon index{% endblock %}
-
+{% block title %}Lista de Pokémon disponibles{% endblock %}
 {% block body %}
 <style>
-    table {
-        border-collapse: collapse;
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
     }
 
-    th,
-    td {
+    a {
+        text-decoration: none;
+        color: #007bff;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .pokemon-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .pokemon-card {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 250px;
         padding: 15px;
         text-align: center;
-        border-bottom: 1px solid #ddd;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .pokemon-card:hover {
+        transform: scale(1.05);
+    }
+
+    .pokemon-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    .pokemon-card h3 {
+        margin: 10px 0;
+        font-size: 18px;
+    }
+
+    .pokemon-card p {
+        margin: 5px 0;
+        font-size: 14px;
+    }
+
+    .actions {
+        margin-top: 10px;
+    }
+
+    .actions a {
+        margin: 0 5px;
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+        font-size: 12px;
+        text-decoration: none;
+    }
+
+    .actions a:hover {
+        background-color: #0056b3;
+    }
+
+    @media (max-width: 768px) {
+        .pokemon-card {
+            width: 100%;
+        }
     }
 </style>
 
 <a href="{{ path('app_main') }}">Inicio</a>
+<h1>Lista de Pokémon disponibles</h1>
 
-    <h1>Pokemon index</h1>
+<div class="pokemon-container">
+    {% for pokemon in pokemon %}
+    <div class="pokemon-card">
+        <img src="{{ asset('uploads/images/' ~ pokemon.image) }}" alt="{{ pokemon.name }}">
+        <h3>{{ pokemon.name }}</h3>
+        <p><strong>Tipo:</strong> {{ pokemon.type }}</p>
+        <p><strong>Número:</strong> {{ pokemon.number }}</p>
+        {% if is_granted('ROLE_ADMIN') %}
+        <div class="actions">
+            <a href="{{ path('app_pokemon_show', {'id': pokemon.id}) }}">Ver</a>
+            <a href="{{ path('app_pokemon_edit', {'id': pokemon.id}) }}">Editar</a>
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <p style="text-align: center; width: 100%;">No se encontraron registros.</p>
+    {% endfor %}
+</div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Image</th>
-                <th>Number</th>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <th>actions</th>
-                {% endif %}
-                
-            </tr>
-        </thead>
-        <tbody>
-            {% for pokemon in pokemon %}
-            <tr>
-                <td>{{ pokemon.id }}</td>
-                <td>{{ pokemon.name }}</td>
-                <td>{{ pokemon.type }}</td>
-                <td> <img src="{{ asset('uploads/images/' ~ pokemon.image) }}" alt="image" width="150" height="150"></td>
-                <td>{{ pokemon.number }}</td>
-                <td>
-
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('app_pokemon_show', {'id': pokemon.id}) }}">show</a>
-                        <a href="{{ path('app_pokemon_edit', {'id': pokemon.id}) }}">edit</a>
-                    {% endif %}
-                </td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('app_pokemon_new') }}">Create new</a>
-    {% endif %}
+{% if is_granted('ROLE_ADMIN') %}
+<a href="{{ path('app_pokemon_new') }}" style="display: block; text-align: center; margin-top: 20px;">
+    <button style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        Crear nuevo Pokémon
+    </button>
+</a>
+{% endif %}
 {% endblock %}

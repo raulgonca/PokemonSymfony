@@ -77,7 +77,7 @@ final class PokedexController extends AbstractController
         $probabilidad = rand(0, 100);
 
         $resultado = 'fracaso'; // Creo una variable para mostrar el resultado de la captura
-
+        $pokedex = new Pokedex();
         if ($probabilidad <= 60) {
 
             $pokedex = new Pokedex();
@@ -92,11 +92,11 @@ final class PokedexController extends AbstractController
 
             $resultado = 'exito';
         }
-        // return $this->render('main/capture.html.twig');
-        return $this->redirectToRoute(
-            'app_capture',
-            ['resultado' => $resultado]
-        );
+        return $this->render('main/capture.html.twig', ['resultado' => $resultado, 'pokedex' => $pokedex]);
+        // return $this->redirectToRoute(
+        //     'app_capture',
+        //     ['resultado' => $resultado]
+        // );
     }
 
     #[Route('/{id}/train', name: 'app_pokedex_train', methods: ['GET', 'POST'])]

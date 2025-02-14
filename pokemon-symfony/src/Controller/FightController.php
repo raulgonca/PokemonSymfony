@@ -24,6 +24,7 @@ final class FightController extends AbstractController
         ]);
     }
 
+
     #[Route('/new', name: 'app_fight_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -72,6 +73,7 @@ final class FightController extends AbstractController
 
             $result = ($userPokemonLevel * $userPokemonStrength) - ($enemyPokemon->getPokemonLevel() * $enemyPokemon->getPokemonStrength());
 
+            // Comprobar resultado
             if ($result > 0) {
                 $fight->setWinner($userPokedex->getId());
                 $userPokedex->setPokemonLevel($userPokemonLevel + 1);
