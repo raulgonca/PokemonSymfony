@@ -130,15 +130,6 @@ final class FightController extends AbstractController
             'enemyPokemon' => $fight->getPokedexPlayerTwo()->getPokemon(),
         ]);
     }
-    #[Route('/fight/result/{id}', name: 'app_fight_result')]
-    public function fightResult(Fight $fight): Response
-    {
-        return $this->render('fight/result_combat.html.twig', [
-            'fight' => $fight,
-            'userPokemon' => $fight->getPokedexPlayerOne()->getPokemon(),
-            'enemyPokemon' => $fight->getPokedexPlayerTwo()->getPokemon(),
-        ]);
-    }
 
 
     #[Route('/{id}', name: 'app_fight_show', methods: ['GET'])]
