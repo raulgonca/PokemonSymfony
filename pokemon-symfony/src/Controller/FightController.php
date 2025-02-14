@@ -53,37 +53,58 @@ final class FightController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $userPokedex = $fight->getPokedexPlayerOne();
-
             $userPokemonLevel = $userPokedex->getPokemonLevel();
             $userPokemonStrength = $userPokedex->getPokemonStrength();
 
-            $enemyPokemon = new Pokedex();
-            $enemyPokemon->setPokemon($pokemonRepository->find(rand(1, 151)));
-            $enemyPokemon->setPokemonLevel(1);
-            $enemyPokemon->setPokemonStrength(pokemonStrength: rand(0, 5));
+            $allPokemons = $pokemonRepository->findAll();
+            $pokemon = $allPokemons[array_rand($allPokemons)];
 
-            $result = $userPokemonLevel * $userPokemonStrength - $enemyPokemon->getPokemonLevel() * $enemyPokemon->getPokemonStrength();
+            $enemyPokemon = new Pokedex();
+            $enemyPokemon->setPokemon($pokemon);
+            $enemyPokemon->setPokemonLevel(1);
+            $enemyPokemon->setPokemonStrength(rand(0, 5));
+            $enemyPokemon->setStatus('sano');
+
+            $entityManager->persist($enemyPokemon);
+            $entityManager->flush();
+
+            $fight->setPokedexPlayerTwo($enemyPokemon);
+
+            $result = ($userPokemonLevel * $userPokemonStrength) - ($enemyPokemon->getPokemonLevel() * $enemyPokemon->getPokemonStrength());
 
             if ($result > 0) {
                 $fight->setWinner($userPokedex->getId());
-                $userPokedex->setPokemonLevel($userPokemonLevel + 1);
+                $userPokedex->setStatus('sano');
+                $enemyPokemon->setStatus('malherido');
             } else {
                 $fight->setWinner($enemyPokemon->getId());
+                $userPokedex->setStatus('malherido');
+                $enemyPokemon->setStatus('sano');
             }
 
+            // Guardar los cambios en la BD
             $entityManager->persist($fight);
             $entityManager->flush();
 
-            return $this->render('fight/result_combat.html.twig', [
-                'fight' => $fight,
+            return $this->redirectToRoute('app_fight_result', [
+                'id' => $fight->getId(),
             ]);
         }
 
         return $this->render('fight/new.html.twig', [
             'fight' => $fight,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/fight/result/{id}', name: 'app_fight_result')]
+    public function fightResult(Fight $fight): Response
+    {
+        return $this->render('fight/result_combat.html.twig', [
+            'fight' => $fight,
+            'userPokemon' => $fight->getPokedexPlayerOne()->getPokemon(),
+            'enemyPokemon' => $fight->getPokedexPlayerTwo()->getPokemon(),
         ]);
     }
 
