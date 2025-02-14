@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}Unirse a Batalla{% endblock %}
+{% block body %}
+    <h1>Unirse a una batalla</h1>
+    <p>Jugador 1 ya ha elegido su Pokémon. Ahora elige el tuyo:</p>
+
+    {{ form_start(form) }}
+        <div>
+            {{ form_label(form.pokedex_player_two) }}
+            {{ form_widget(form.pokedex_player_two) }}
+        </div>
+        <button type="submit">Unirse a la pelea</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_main') }}">Volver a inicio</a>
+{% endblock %}

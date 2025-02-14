@@ -6,6 +6,7 @@ use App\Entity\Fight;
 use App\Entity\Pokedex;
 use App\Form\FightType;
 use App\Repository\FightRepository;
+use App\Repository\PokedexRepository;
 use App\Repository\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,15 +53,6 @@ final class FightController extends AbstractController
         $form = $this->createForm(FightType::class, $fight);
         $form->handleRequest($request);
 
-        $allPokemons = $pokemonRepository->findAll();
-        $pokemon = $allPokemons[array_rand($allPokemons)];
-
-        $enemyPokemon = new Pokedex();
-        $enemyPokemon->setPokemon($pokemon);
-        $enemyPokemon->setPokemonLevel(1);
-        $enemyPokemon->setPokemonStrength(rand(0, 5));
-        $enemyPokemon->setStatus('sano');
-
         if ($form->isSubmitted() && $form->isValid()) {
             $userPokedex = $fight->getPokedexPlayerOne();
             $userPokemonLevel = $userPokedex->getPokemonLevel();
@@ -93,8 +85,6 @@ final class FightController extends AbstractController
                 $enemyPokemon->setStatus('sano');
             }
 
-            // Guardar los cambios en la BD
-            // Guardar los cambios en la BD
             $entityManager->persist($fight);
             $entityManager->flush();
 
@@ -106,20 +96,85 @@ final class FightController extends AbstractController
         return $this->render('fight/new.html.twig', [
             'fight' => $fight,
             'form' => $form,
-            'enemyPokemon' => $enemyPokemon->getPokemon(),
         ]);
     }
 
     // Batalla contra usuario real
-    // // Implementar aquí el código para la batalla contra un usuario real
-    // #[Route('/new/online', name: 'app_fight_new_online', methods: ['GET', 'POST'])]
-    // public function newFightOnline(Request $request, EntityManagerInterface $entityManager): Response
-    // {
-    //     // TODO: Implementar aquí el código para la batalla contra un usuario real
+    // Implementar aquí el código para la batalla contra un usuario real
+    #[Route('/new/online', name: 'app_fight_new_online', methods: ['GET', 'POST'])]
+    public function newFightOnline(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $fight = new Fight();
+        $form = $this->createForm(FightType::class, $fight);
+        $form->handleRequest($request);
 
-    // }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $fight->setPokedexPlayerTwo(null); // Deja al jugador 2 en espera
 
+            $entityManager->persist($fight);
+            $entityManager->flush();
 
+            return $this->redirectToRoute('app_main');
+        }
+
+        return $this->render('fight/new.html.twig', [
+            'fight' => $fight,
+            'form' => $form,
+        ]);
+    }
+
+    // TODO: Esto no funciona
+    #[Route('/join/online', name: 'app_fight_join_online', methods: ['GET', 'POST'])]
+    public function joinFightOnline(Request $request, EntityManagerInterface $entityManager, FightRepository $fightRepository): Response
+    {
+        // Buscar una batalla pendiente (sin jugador 2)
+        $fight = $fightRepository->findOneBy(['pokedex_player_two' => null]);
+
+        // Crear el formulario y asociarlo al objeto Fight
+        $form = $this->createForm(FightType::class, $fight);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Obtener el Pokémon seleccionado por el jugador 2
+            $pokedexPlayerTwo = $form->get('pokedex_player_two')->getData();
+
+            // Asignar el Pokémon seleccionado al jugador 2
+            $fight->setPokedexPlayerTwo($pokedexPlayerTwo);
+
+            // Obtener los datos del jugador 1 y jugador 2
+            $playerOne = $fight->getPokedexPlayerOne();
+            $playerTwo = $pokedexPlayerTwo;
+
+            // Calcular el resultado de la batalla
+            $result = ($playerOne->getPokemonLevel() * $playerOne->getPokemonStrength()) -
+                ($playerTwo->getPokemonLevel() * $playerTwo->getPokemonStrength());
+
+            if ($result > 0) {
+                $fight->setWinner($playerOne->getId());
+                $playerOne->setStatus('sano');
+                $playerTwo->setStatus('malherido');
+            } else {
+                $fight->setWinner($playerTwo->getId());
+                $playerOne->setStatus('malherido');
+                $playerTwo->setStatus('sano');
+            }
+
+            // Persistir los cambios
+            $entityManager->persist($fight);
+            $entityManager->persist($playerOne);
+            $entityManager->persist($playerTwo);
+            $entityManager->flush();
+
+            // Redirigir al resultado de la batalla
+            return $this->redirectToRoute('app_fight_result', ['id' => $fight->getId()]);
+        }
+
+        // Renderizar la vista con el formulario
+        return $this->render('fight/join_online.html.twig', [
+            'fight' => $fight,
+            'form' => $form->createView(),
+        ]);
+    }
 
     #[Route('/fight/result/{id}', name: 'app_fight_result')]
     public function fightResult(Fight $fight): Response

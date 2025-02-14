@@ -3,12 +3,10 @@
 {% block title %}New Fight{% endblock %}
 
 {% block body %}
-    <h1>Create new Fight</h1>
+    <h1>Nueva batalla</h1>
 
-
-    <p>Tu rival es ... {{ enemyPokemon.name }}</p>
-    <br>
     {{ include('fight/_form.html.twig') }}
 
     <a href="{{ path('app_main') }}">Volver a inicio</a>
 {% endblock %}
+    

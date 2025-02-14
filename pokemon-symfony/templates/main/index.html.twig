@@ -12,6 +12,7 @@
     <h1>Bienvenido {{ app.user.username }}! </h1>
     <a href="{{ path('app_capture') }}">Cazar un pokemon</a>
     <a href="{{ path('app_fight_new_ai') }}">Batalla contra IA</a>
+    <a href="{{ path('app_fight_new_online') }}">Batalla Online</a>
 
 
     {% endif %}
@@ -31,6 +32,19 @@
         <a href="{{ path('app_pokedex_index') }}">Ver Pokemon Capturados</a>
         <br>
         <br>
+        
+ {% if openFights is empty %}
+        <p>No hay batallas abiertas en este momento.</p>
+    {% else %}
+        <ul>
+            {% for fight in openFights %}
+                <li>
+                    Batalla #{{ fight.id }} - Esperando un oponente
+                    <a href="{{ path('app_fight_join_online', {'id': fight.id}) }}">Unirse</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     {% endif %}
 
     {% if is_granted('ROLE_ADMIN') %}

@@ -24,21 +24,21 @@ class FightType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $user = $this->security->getUser();
-    
+
         $builder
-        ->add('pokedex_player_one', EntityType::class, [
-            'class' => Pokedex::class,
-            'choice_label' => 'pokemon.name',
-            'query_builder' => function (EntityRepository $er) use ($user) {
-                return $er->createQueryBuilder('pokedex')
-                    ->join('pokedex.pokemon', 'pokemon')
-                    ->where('pokedex.user = :user') // Ajusta 'owner' según el nombre correcto en tu entidad
-                    ->setParameter('user', $user);
-            },
-            'placeholder' => 'Selecciona tu Pokémon',
-        ]);
+            ->add('pokedex_player_one', EntityType::class, [
+                'class' => Pokedex::class,
+                'choice_label' => 'pokemon.name',
+                'query_builder' => function (EntityRepository $er) use ($user) {
+                    return $er->createQueryBuilder('pokedex')
+                        ->join('pokedex.pokemon', 'pokemon')
+                        ->where('pokedex.user = :user')
+                        ->setParameter('user', $user);
+                },
+                'placeholder' => 'Selecciona tu Pokémon',
+                'required' => false,
+            ]);
     }
-    
 
     public function configureOptions(OptionsResolver $resolver): void
     {
