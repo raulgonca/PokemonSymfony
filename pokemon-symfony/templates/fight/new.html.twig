@@ -5,7 +5,10 @@
 {% block body %}
     <h1>Create new Fight</h1>
 
+
+    <p>Tu rival es ... {{ enemyPokemon.name }}</p>
+    <br>
     {{ include('fight/_form.html.twig') }}
 
-    <a href="{{ path('app_fight_index') }}">back to list</a>
+    <a href="{{ path('app_main') }}">Volver a inicio</a>
 {% endblock %}
