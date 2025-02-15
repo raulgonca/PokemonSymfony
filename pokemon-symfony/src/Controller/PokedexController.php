@@ -93,19 +93,15 @@ final class PokedexController extends AbstractController
             $resultado = 'exito';
         }
         return $this->render('main/capture.html.twig', ['resultado' => $resultado, 'pokedex' => $pokedex]);
-        // return $this->redirectToRoute(
-        //     'app_capture',
-        //     ['resultado' => $resultado]
-        // );
     }
 
     #[Route('/{id}/train', name: 'app_pokedex_train', methods: ['GET', 'POST'])]
-    public function train(Pokedex $pokedex, EntityManagerInterface $entityManager): Response
+    public function train(Pokedex $pokedex, EntityManagerInterface $entityManager, PokedexRepository $pokedexRepository): Response
     {
         $pokedex->setPokemonStrength($pokedex->getPokemonStrength() + 10);
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_pokedex_show', ['id' => $pokedex->getId()], Response::HTTP_SEE_OTHER);
+        return $this->render('main/capturados.html.twig', ['id' => $pokedex->getId(), 'pokedexes' => $pokedexRepository->findPokedexesByUser($this->getUser())]);
     }
 
     public function checkAndEvolvePokemon(Pokedex $pokedex): void
@@ -132,13 +128,11 @@ final class PokedexController extends AbstractController
 
 
     #[Route('/{id}/uplevel', name: 'app_pokedex_uplevel', methods: ['GET', 'POST'])]
-    public function upLevel(Pokedex $pokedex, EntityManagerInterface $entityManager, )
+    public function upLevel(Pokedex $pokedex, EntityManagerInterface $entityManager,)
     {
         $pokedex->setPokemonLevel($pokedex->getPokemonLevel() + 1);
         $entityManager->flush();
 
         return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
-
-
     }
 }

@@ -45,8 +45,9 @@
                 <h5 class="card-title">{{ pokedex.pokemon.name }}</h5>
                 <p class="card-text">Tipo: {{ pokedex.pokemon.type }}</p>
                 <p class="card-text">Pokedex Nº: {{ pokedex.pokemon.number }}</p>
+                <p class="card-text">Nivel: {{ pokedex.pokemonLevel }}</p>
+                <p class="card-text">Fuerza: {{ pokedex.pokemonStrength }}</p>
                 <img src="{{ asset('uploads/images/' ~ pokedex.pokemon.image) }}" alt="{{ pokedex.pokemon.name }}" />
-                <a href="{{ path('app_pokedex_train', {'id': pokedex.id}) }}">entrenar</a>
 
                 <a href="{{ path('app_pokedex_train', { id: pokedex.id }) }}">Entrenar</a>
             </div>

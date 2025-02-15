@@ -123,29 +123,31 @@ final class FightController extends AbstractController
         ]);
     }
 
-    // TODO: Esto no funciona
     #[Route('/join/online', name: 'app_fight_join_online', methods: ['GET', 'POST'])]
-    public function joinFightOnline(Request $request, EntityManagerInterface $entityManager, FightRepository $fightRepository): Response
+    public function joinFightOnline(Request $request, EntityManagerInterface $entityManager, FightRepository $fightRepository, PokedexRepository $pokedexRepository): Response
     {
         // Buscar una batalla pendiente (sin jugador 2)
         $fight = $fightRepository->findOneBy(['pokedex_player_two' => null]);
 
-        // Crear el formulario y asociarlo al objeto Fight
-        $form = $this->createForm(FightType::class, $fight);
-        $form->handleRequest($request);
+        if (!$fight) {
+            return $this->redirectToRoute('app_fight_index');
+        }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Obtener el Pokémon seleccionado por el jugador 2
-            $pokedexPlayerTwo = $form->get('pokedex_player_two')->getData();
+        // Obtener la lista de Pokémon del usuario actual
+        $user = $this->getUser();
+        $userPokedex = $pokedexRepository->findPokedexesByUser($user);
 
-            // Asignar el Pokémon seleccionado al jugador 2
+        // Manejo del formulario
+        if ($request->isMethod('POST')) {
+            $pokemonId = $request->request->get('pokedex_player_two');
+            $pokedexPlayerTwo = $pokedexRepository->find($pokemonId);
+
             $fight->setPokedexPlayerTwo($pokedexPlayerTwo);
 
-            // Obtener los datos del jugador 1 y jugador 2
+            // Calcular el resultado de la batalla
             $playerOne = $fight->getPokedexPlayerOne();
             $playerTwo = $pokedexPlayerTwo;
 
-            // Calcular el resultado de la batalla
             $result = ($playerOne->getPokemonLevel() * $playerOne->getPokemonStrength()) -
                 ($playerTwo->getPokemonLevel() * $playerTwo->getPokemonStrength());
 
@@ -165,17 +167,15 @@ final class FightController extends AbstractController
             $entityManager->persist($playerTwo);
             $entityManager->flush();
 
-            // Redirigir al resultado de la batalla
             return $this->redirectToRoute('app_fight_result', ['id' => $fight->getId()]);
         }
 
-        // Renderizar la vista con el formulario
+        // Renderizar la vista con el formulario manual
         return $this->render('fight/join_online.html.twig', [
             'fight' => $fight,
-            'form' => $form->createView(),
+            'userPokedex' => $userPokedex,
         ]);
     }
-
     #[Route('/fight/result/{id}', name: 'app_fight_result')]
     public function fightResult(Fight $fight): Response
     {
@@ -185,7 +185,6 @@ final class FightController extends AbstractController
             'enemyPokemon' => $fight->getPokedexPlayerTwo()->getPokemon(),
         ]);
     }
-
 
     #[Route('/{id}', name: 'app_fight_show', methods: ['GET'])]
     public function show(Fight $fight): Response
