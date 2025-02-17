@@ -1,58 +1,200 @@
 {% extends 'base.html.twig' %}
+{% block title %}Pokémon Symfony{% endblock %}
+{% block stylesheets %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
 
-{% block title %}Pokemon Symfony{% endblock %}
+
+        .container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            z-index: 2;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 
+                2px 2px 0 #2563eb,
+                -2px -2px 0 #2563eb,
+                2px -2px 0 #2563eb,
+                -2px 2px 0 #2563eb;
+        }
+
+        .subtitle {
+            color: white;
+            font-size: 1.25rem;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+        }
+
+        .card-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .card-text {
+            flex-grow: 1;
+        }
+
+        .card-hint {
+            color:rgb(19, 94, 47);
+        }
+
+        .icon-classic { background-color: #3B82F6; }
+        .icon-card { background-color: #EF4444; }
+        .icon-description { background-color: #8B5CF6; }
+        .icon-silhouette { background-color: #1F2937; }
+
+        .login-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .admin-section {
+            margin-top: 30px;
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+        }
+
+        h2 {
+            color: white;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        p {
+            color: white;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-
-<div class="example-wrapper">
-
-
-    {% if is_granted('ROLE_USER') %}
-
-    <h1>Bienvenido {{ app.user.username }}! </h1>
-    <a href="{{ path('app_capture') }}">Cazar un pokemon</a>
-    <a href="{{ path('app_fight_new_ai') }}">Batalla contra IA</a>
-    <a href="{{ path('app_fight_new_online') }}">Batalla Online</a>
-
-
-    {% endif %}
-
-
+<div class="ground-decoration"></div>
 <div class="container">
-
-    <br><br>
-    <h1>Bienvenido a Pokemon en Symfony</h1>
-
-        <a href="{{ path('app_login') }}">Iniciar Sesion</a>
-
+    <div class="header">
+        <span class="logo">Hazte con todos</span>
+    </div>
 
     {% if is_granted('ROLE_USER') %}
-    <a href="{{ path('app_pokemon_index') }}">Ir a la página de Pokémon</a>
-        <br>
-        <a href="{{ path('app_pokedex_index') }}">Ver Pokemon Capturados</a>
-        <br>
-        <br>
+        <h1 class="subtitle">¡Bienvenido {{ app.user.username }}!</h1>
         
- {% if openFights is empty %}
-        <p>No hay batallas abiertas en este momento.</p>
+        <div class="card-container">
+            <a href="{{ path('app_capture') }}" class="card">
+                <div class="card-icon icon-classic">?</div>
+                <div class="card-text">CAZAR POKÉMON</div>
+                <div class="card-hint">Atrapa nuevos Pokémon</div>
+            </a>
+
+            <a href="{{ path('app_fight_new_ai') }}" class="card">
+                <div class="card-icon icon-card">🎮</div>
+                <div class="card-text">BATALLA CONTRA IA</div>
+                <div class="card-hint">Entrena tus habilidades</div>
+            </a>
+
+            <a href="{{ path('app_fight_new_online') }}" class="card">
+                <div class="card-icon icon-description">⚔️</div>
+                <div class="card-text">BATALLA ONLINE</div>
+                <div class="card-hint">Compite contra otros entrenadores</div>
+            </a>
+
+            <a href="{{ path('app_pokedex_index') }}" class="card">
+                <div class="card-icon icon-silhouette">📖</div>
+                <div class="card-text">POKÉMON CAPTURADOS</div>
+                <div class="card-hint">Ver tu colección</div>
+            </a>
+        </div>
+
+        {% if openFights is not empty %}
+            <h2>Batallas Abiertas</h2>
+            <ul>
+                {% for fight in openFights %}
+                    <li>
+                        Batalla #{{ fight.id }} - Esperando un oponente
+                        <a href="{{ path('app_fight_join_online', {'id': fight.id}) }}" class="login-button">Unirse</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="admin-section">
+                <h2>Administración</h2>
+                <p>Solo administradores pueden crear Pokémon.</p>
+                <a href="{{ path('app_pokemon_new') }}" class="login-button">Crear un nuevo Pokémon</a>
+            </div>
+        {% endif %}
     {% else %}
-        <ul>
-            {% for fight in openFights %}
-                <li>
-                    Batalla #{{ fight.id }} - Esperando un oponente
-                    <a href="{{ path('app_fight_join_online', {'id': fight.id}) }}">Unirse</a>
-                </li>
-            {% endfor %}
-        </ul>
+        <h1 class="subtitle">¡Bienvenido a Pokémon en Symfony!</h1>
+        <a href="{{ path('app_login') }}" class="login-button">Iniciar Sesión</a>
     {% endif %}
-    {% endif %}
-
-    {% if is_granted('ROLE_ADMIN') %}
-        <p> Solo Admins pueden crear Pokemon </p>
-        <a href="{{ path('app_pokemon_new') }}">Crear un nuevo Pokémon</a>
-    {% endif %}
-
 </div>
-    
-
 {% endblock %}
