@@ -33,12 +33,15 @@ class FightType extends AbstractType
                     return $er->createQueryBuilder('pokedex')
                         ->join('pokedex.pokemon', 'pokemon')
                         ->where('pokedex.user = :user')
-                        ->setParameter('user', $user);
+                        ->andWhere('pokedex.status = :status')
+                        ->setParameter('user', $user)
+                        ->setParameter('status', 'sano');
                 },
                 'placeholder' => 'Selecciona tu Pokémon',
                 'required' => false,
             ]);
     }
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {
