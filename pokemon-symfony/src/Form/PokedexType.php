@@ -19,11 +19,11 @@ class PokedexType extends AbstractType
             ->add('pokemonStrength')
             ->add('user', EntityType::class, [
                 'class' => User::class,
-'choice_label' => 'id',
+                'choice_label' => 'id',
             ])
             ->add('pokemon', EntityType::class, [
                 'class' => Pokemon::class,
-'choice_label' => 'id',
+                'choice_label' => 'id',
             ])
         ;
     }

@@ -134,5 +134,31 @@ final class PokedexController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
+
     }
+
+    #[Route('/heal/{id}', name: 'app_pokedex_heal', methods: ['GET', 'POST'])]
+    public function healOne(Pokedex $pokedex, EntityManagerInterface $entityManager): Response
+    {
+        // Cambiar estado a "saludable"
+        $pokedex->setStatus('saludable');
+        $entityManager->persist($pokedex);
+        $entityManager->flush();
+
+        // Redirigir a la lista de Pokémon heridos
+        return $this->redirectToRoute('app_heal');
+    }
+
+    // Ruta para ver lista de Pokémon heridos
+    #[Route('/heal', name: 'app_heal', methods: ['GET'])]
+    public function heal(PokedexRepository $pokedexRepository): Response
+    {
+        return $this->render('main/heal_pokemon.html.twig', [
+            'pokedexes' => $pokedexRepository->findPokedexesByStatus($this->getUser(),'herido'),
+        ]);
+    }
+
+
+
+
 }

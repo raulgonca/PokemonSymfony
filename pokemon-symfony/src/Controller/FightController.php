@@ -222,4 +222,6 @@ final class FightController extends AbstractController
 
         return $this->redirectToRoute('app_fight_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    
 }

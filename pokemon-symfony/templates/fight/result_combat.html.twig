@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Combate Pokemon{% endblock %}
+{% block title %}Combate Pokémon{% endblock %}
 
 {% block body %}
-<div class="container">
+<div class="container1">
     <a href="{{ path('app_main') }}">Inicio</a>
     <br><br>
     <h1>Combate Pokemon</h1>
@@ -21,6 +20,15 @@
         {# <p>Revivir un Pokémon</p> #}
         {# <a href="{{ path('app_pokedex_revive', {'id': fight.winner == fight.pokedexPlayerOne.id ? fight.pokedexPlayerOne.pokemon.id : fight.pokedexPlayerTwo.pokemon.id}) }}">Revivir Pokémon</a> #}
         <br><br>
+
+        <p>Elige una de las siguientes opciones:</p>
+
+        <ul>
+            <li><a href="{{ path('app_pokedex_uplevel', { 'id': userPokemon.id }) }}">Subir Nivel</a></li>
+            <li><a href="{{ path('app_pokedex_catch', { 'id': enemyPokemon.id }) }}">Intentar Capturar</a></li>
+            <li><a href="{{ path('app_heal') }}">Curar Pokémon Heridos</a></li>
+        </ul>
+
     {% else %}
         <p>Has perdido el combate...</p>
         <br><br>

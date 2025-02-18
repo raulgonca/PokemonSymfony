@@ -48,7 +48,6 @@
                 <p class="card-text">Nivel: {{ pokedex.pokemonLevel }}</p>
                 <p class="card-text">Fuerza: {{ pokedex.pokemonStrength }}</p>
                 <img src="{{ asset('uploads/images/' ~ pokedex.pokemon.image) }}" alt="{{ pokedex.pokemon.name }}" />
-
                 <a href="{{ path('app_pokedex_train', { id: pokedex.id }) }}">Entrenar</a>
             </div>
         </div>
