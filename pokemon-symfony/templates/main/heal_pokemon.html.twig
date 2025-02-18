@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block title %}Pokedex{% endblock %}
+{% block body %}
+
+<div class="container">
+    <a href="{{ path('app_main') }}">Inicio</a>
+    <h1>Aquí podrás ver los Pokémon que estan para el arrastre!!</h1>
+
+    <!-- Contenedor principal para los Pokémon -->
+    <div class="pokemon-container">
+        {% for pokedex in pokedexes %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ pokedex.pokemon.name }}</h5>
+                <p class="card-text">Tipo: {{ pokedex.pokemon.type }}</p>
+                <p class="card-text">Pokedex Nº: {{ pokedex.pokemon.number }}</p>
+                <img src="{{ asset('uploads/images/' ~ pokedex.pokemon.image) }}" alt="{{ pokedex.pokemon.name }}" />
+
+                <!-- Botón para curar este Pokémon en específico -->
+                <a href="{{ path('app_pokedex_heal', { id: pokedex.id }) }}" class="btn btn-success">Curar</a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock %}

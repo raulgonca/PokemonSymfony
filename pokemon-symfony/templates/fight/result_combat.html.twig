@@ -1,25 +1,28 @@
 {% extends 'base.html.twig' %}
-{% block title %}Combate Pokemon{% endblock %}
+{% block title %}Combate Pokémon{% endblock %}
+
 {% block body %}
-<div class="container">
+<div class="container1">
     <a href="{{ path('app_main') }}">Inicio</a>
     <br><br>
-    <h1>Combate Pokemon</h1>
+    <h1>Combate Pokémon</h1>
     <p>{{ userPokemon.name }} VS {{ enemyPokemon.name }}</p>
     <br><br>
 
     {% if fight.winner == app.user.id %}
-        <p>{{ app.user.username }} Ganó el combate</p>
+        <p>{{ app.user.username }} ganó el combate</p>
         <br><br>
-        <p> Elige una de las siguientes opciones:</p>
-        <a href="{{ path('app_pokedex_uplevel', {'id': userPokemon.id}) }}">Subir Nivel</a>
-        <br><br>
-        <a href="{{ path('app_pokedex_catch', {'id': enemyPokemon.id}) }}">Intentar capturar</a>
-        <br><br>
-        {# <a href="{{ path('') }}">Revive a un Inutil</a> #}
-        <br><br>
+
+        <p>Elige una de las siguientes opciones:</p>
+
+        <ul>
+            <li><a href="{{ path('app_pokedex_uplevel', { 'id': userPokemon.id }) }}">Subir Nivel</a></li>
+            <li><a href="{{ path('app_pokedex_catch', { 'id': enemyPokemon.id }) }}">Intentar Capturar</a></li>
+            <li><a href="{{ path('app_heal') }}">Curar Pokémon Heridos</a></li>
+        </ul>
+
     {% else %}
-        <p>Has Perdido el combate</p>
+        <p>Has perdido el combate</p>
         <br><br>
         <a href="{{ path('app_main') }}">Volver al Inicio</a>
     {% endif %}

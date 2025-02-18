@@ -57,10 +57,12 @@ class PokedexRepository extends ServiceEntityRepository
     public function findAllInjuredByUser(User $user): array
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.status = \'malherido\'') // Usar el valor literal 'malherido'
-            ->andWhere('p.user = :userId')         // Filtrar por el ID del usuario
-            ->setParameter('userId', $user)      // Establecer el parámetro 'userId'
+            ->where('p.status = :status')
+            ->andWhere('p.user = :user')
+            ->setParameter('status', 'malherido')
+            ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
     }
+    
 }
