@@ -1,4 +1,5 @@
 # PokemonSymfony
+
 Aplicación realizada en Symfony
 
 Nos piden hacer una aplicación para coleccionar pokemons y obligarlos a enfrentarse entre ellos, para verlos sufrir.
@@ -24,5 +25,20 @@ El que pierde, sufre la presión social y miradas de soslayo por ser un bicho pe
 
 Queremos ver a qué pokemon se ha enfrentado y el resultado del enfrentamiento.
 
-<img src="./img/modeloer.png">
+---
 
+AMPLIACIÓN 1
+
+Cuando un pokemon pierde un combate, se queda malherido e inutilizable. No podrá entrenar ni luchar.
+
+Cada pokemon podrá tener un nivel en el que evoluciona a otro tipo de pokemon. Superado ese nivel, nos permitirá evolucionarlo, lo que hará que cambie de forma irreversible.
+
+Al ganar un combate pokemon, podremos elegir entre subir de nivel, intentar cazar al pokemon vencido o "resucitar" a un pokemon malherido.
+
+podremos enfrentarnos tambien a otros entrenadores pokemon, que actuan desde su propio terminal. Cada uno escoge un pokemon de los que tiene activos y se lian a mamporros. Las consecuencias son las mismas que en un combate contra la máquina.
+
+AMPLIACIÓN 2
+
+ahora hay enfrentamientos por equipos: podremos escoger un equipo, nos informa como es el equipo contrario y reordenamos para ver quien se enfrenta con quien. el que mas enfrentamientos por parejas gane, gana la pelea
+
+<img src="./img/modeloer.png">

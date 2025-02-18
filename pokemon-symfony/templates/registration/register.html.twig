@@ -1,19 +1,103 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Register{% endblock %}
-
+{% block stylesheets %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .register-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .register-container h1 {
+            color: #FFD700;
+            font-size: 2rem;
+            margin-bottom: 24px;
+            text-shadow: 
+                2px 2px 0 #2563eb,
+                -2px -2px 0 #2563eb,
+                2px -2px 0 #2563eb,
+                -2px 2px 0 #2563eb;
+        }
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: none;
+            border-radius: 8px;
+            background: #f9f9f9;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        .form-control:focus {
+            background: #e9ecef;
+            outline: none;
+        }
+        .btn-primary {
+            background: #FFD700;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .error {
+            background: #EF4444;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .checkbox-label {
+            color: #333;
+            font-size: 0.9rem;
+        }
+    </style>
+{% endblock %}
 {% block body %}
-    <h1>Register</h1>
-
-    {{ form_errors(registrationForm) }}
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
+<div class="register-container">
+    <h1>Registro</h1>
+    
+    {% if form_errors(registrationForm) %}
+        <div class="error">
+            {{ form_errors(registrationForm) }}
+        </div>
+    {% endif %}
+    
+    {{ form_start(registrationForm, {'attr': {'class': 'registration-form'}}) }}
+        
+        {{ form_row(registrationForm.username, {'attr': {'class': 'form-control', 'placeholder': 'Nombre de usuario'}}) }}
+        
         {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
+            label: 'Contraseña',
+            attr: {'class': 'form-control', 'placeholder': 'Contraseña'}
         }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
+        
+        {{ form_row(registrationForm.agreeTerms, {
+            label: 'Acepto los términos y condiciones',
+            label_attr: {'class': 'checkbox-label'}
+        }) }}
+        
+        <button type="submit" class="btn-primary">Registrar</button>
+    
     {{ form_end(registrationForm) }}
+</div>
 {% endblock %}

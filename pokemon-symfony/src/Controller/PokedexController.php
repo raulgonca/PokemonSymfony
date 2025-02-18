@@ -43,6 +43,7 @@ final class PokedexController extends AbstractController
         ]);
     }
 
+
     #[Route('/{id}', name: 'app_pokedex_show', methods: ['GET'])]
     public function show(Pokedex $pokedex): Response
     {
@@ -92,7 +93,7 @@ final class PokedexController extends AbstractController
 
             $resultado = 'exito';
         }
-        return $this->render('main/capture.html.twig', ['resultado' => $resultado, 'pokedex' => $pokedex]);
+        return $this->render('main/captureResult.html.twig', ['resultado' => $resultado, 'pokedex' => $pokedex]);
     }
 
     #[Route('/{id}/train', name: 'app_pokedex_train', methods: ['GET', 'POST'])]
@@ -131,6 +132,9 @@ final class PokedexController extends AbstractController
     public function upLevel(Pokedex $pokedex, EntityManagerInterface $entityManager,)
     {
         $pokedex->setPokemonLevel($pokedex->getPokemonLevel() + 1);
+
+        $this->checkAndEvolvePokemon($pokedex);
+
         $entityManager->flush();
 
         return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);

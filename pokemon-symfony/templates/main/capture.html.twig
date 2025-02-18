@@ -1,37 +1,100 @@
 {% extends 'base.html.twig' %}
+{% block title %}Capturar Pokémon{% endblock %}
+{% block stylesheets %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .capture-container {
+            position: relative; 
+            background: rgba(255, 255, 255, 0.9);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .capture-container h1 {
+            color: #FFD700;
+            font-size: 2rem;
+            margin-bottom: 24px;
+            text-shadow: 
+                2px 2px 0 #2563eb,
+                -2px -2px 0 #2563eb,
+                2px -2px 0 #2563eb,
+                -2px 2px 0 #2563eb;
+        }
+        .back-button {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.9);
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .action-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 8px;
+            background: #FFD700;
+            color: black;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .action-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .pokemon-info {
+            margin: 24px 0;
+            padding: 16px;
+            border: 2px solid #FFD700;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .pokemon-info h2 {
+            color: black;
 
-{% block title %}Capturar pokemon{% endblock %}
-
+        }
+        .pokemon-info p {
+            color: black;
+            margin: 8px 0;
+            font-size: 1.1rem;
+        }
+    </style>
+{% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-<a href="{{ path('app_main') }}">Volver</a>
-<div class="example-wrapper">
+<div class="capture-container">
+    <!-- Botón para volver -->
+    <a href="{{ path('app_main') }}" class="back-button">Volver</a>
 
     <h1>Hierba alta</h1>
-    <a href="/pokemon/showRandomPokemon">Mostrar un nuevo pokemon</a>
+    <a href="/pokemon/showRandomPokemon" class="action-button">Mostrar un nuevo Pokémon</a>
 
-        {# Mostrar pokemon a capturar #}
-        {% if pokemon is defined %}
-            <h1>Un pokemon apareció</h1>
-            <p>Nombre: {{ pokemon.name }}</p>
-            <p>Tipo: {{ pokemon.type }}</p>
-
-            <a href="/pokedex/catch/{{ pokemon.id }}"> Lanzar pokeball (60% captura) </a>
-            </br>
-            <a href="/capture"> Dejar </a>
-        {% endif %}
-
-        {# Mostrar resultado #}
-        {% if resultado is defined %}
-            {% if resultado == 'exito' %}
-                <p class="success">¡Has capturado un {{pokedex.pokemon.name}}! 🙂</p>
-            {% elseif resultado == 'fracaso' %}
-                <p class="failure">El pokemon ha escapado... ☹️</p>
-            {% endif %}
-        {% endif %}
-
+    <!-- Mostrar Pokémon a capturar -->
+    {% if pokemon is defined %}
+        <div class="pokemon-info">
+            <h2>¡Un Pokémon ha aparecido!</h2>
+            <p><strong>Nombre:</strong> {{ pokemon.name }}</p>
+            <p><strong>Tipo:</strong> {{ pokemon.type }}</p>
+        </div>
+        <a href="/pokedex/catch/{{ pokemon.id }}" class="action-button">Lanzar Pokéball (60% de éxito)</a>
+        <a href="/capture" class="action-button">Dejar</a>
+    {% endif %}
 </div>
 {% endblock %}

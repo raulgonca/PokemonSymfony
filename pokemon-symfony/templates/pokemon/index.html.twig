@@ -16,6 +16,7 @@
     h1 {
         text-align: center;
         margin-bottom: 20px;
+        color:white;
     }
 
     .pokemon-container {
@@ -80,8 +81,11 @@
         }
     }
 </style>
-
-<a href="{{ path('app_main') }}">Inicio</a>
+<a href="{{ path('app_main') }}" style=" margin-bottom: 20px;">
+    <button style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        Volver al Inicio
+    </button>
+</a>
 <h1>Lista de Pokémon disponibles</h1>
 
 <div class="pokemon-container">
