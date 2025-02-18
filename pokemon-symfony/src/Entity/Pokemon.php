@@ -6,6 +6,7 @@ use App\Repository\PokemonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
 class Pokemon
@@ -13,27 +14,30 @@ class Pokemon
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['pokemon:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['pokemon:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['pokemon:read'])]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['pokemon:read'])]
     private ?string $image = null;
 
-    /**
-     * @var Collection<int, Pokedex>
-     */
     #[ORM\OneToMany(targetEntity: Pokedex::class, mappedBy: 'pokemon')]
     private Collection $pokedexes;
 
     #[ORM\Column]
+    #[Groups(['pokemon:read'])]
     private ?int $number = null;
 
     #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+    #[Groups(['pokemon:read'])]
     private ?self $pokemon_evolution = null;
 
     public function __construct()
