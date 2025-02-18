@@ -26,7 +26,6 @@ final class FightController extends AbstractController
         ]);
     }
 
-
     #[Route('/new', name: 'app_fight_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -178,10 +177,13 @@ final class FightController extends AbstractController
         ]);
     }
     #[Route('/fight/result/{id}', name: 'app_fight_result')]
-    public function fightResult(Fight $fight): Response
+    public function fightResult(Fight $fight, PokedexRepository $pokedexRepository): Response
     {
+        $injuredPokemons = $pokedexRepository->findPokedexesByUserAndStatus($this->getUser(), 'malherido');
+
         return $this->render('fight/result_combat.html.twig', [
             'fight' => $fight,
+            'injuredPokemons' => $injuredPokemons,
             'userPokemon' => $fight->getPokedexPlayerOne()->getPokemon(),
             'enemyPokemon' => $fight->getPokedexPlayerTwo()->getPokemon(),
         ]);
@@ -223,6 +225,4 @@ final class FightController extends AbstractController
 
         return $this->redirectToRoute('app_fight_index', [], Response::HTTP_SEE_OTHER);
     }
-
-    
 }

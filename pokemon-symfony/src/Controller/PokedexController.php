@@ -138,31 +138,23 @@ final class PokedexController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
-
     }
 
-    #[Route('/heal/{id}', name: 'app_pokedex_heal', methods: ['GET', 'POST'])]
-    public function healOne(Pokedex $pokedex, EntityManagerInterface $entityManager): Response
+    #[Route('/heal', name: 'app_pokedex_heal', methods: ['GET'])]
+    public function healOne(EntityManagerInterface $entityManager, Request $request, PokedexRepository $pokedexRepository): Response
     {
-        // Cambiar estado a "saludable"
-        $pokedex->setStatus('saludable');
-        $entityManager->persist($pokedex);
-        $entityManager->flush();
+        if ($request->isMethod('GET')) {
+            $pokemonId = $request->query->get('pokedex'); // Asegurar que obtiene el ID del formulario
+            $pokedex = $pokedexRepository->find($pokemonId);
 
-        // Redirigir a la lista de Pokémon heridos
-        return $this->redirectToRoute('app_heal');
+            if ($pokedex) {
+                $pokedex->setStatus('sano');
+                $entityManager->flush();
+            }
+
+            return $this->redirectToRoute('app_main'); // O la vista donde se refleje el cambio
+        }
+
+        return $this->redirectToRoute('app_main');
     }
-
-    // Ruta para ver lista de Pokémon heridos
-    #[Route('/heal', name: 'app_heal', methods: ['GET'])]
-    public function heal(PokedexRepository $pokedexRepository): Response
-    {
-        return $this->render('main/heal_pokemon.html.twig', [
-            'pokedexes' => $pokedexRepository->findPokedexesByStatus($this->getUser(),'herido'),
-        ]);
-    }
-
-
-
-
 }

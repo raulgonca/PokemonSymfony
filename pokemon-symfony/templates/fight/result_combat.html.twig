@@ -77,11 +77,17 @@
         <!-- Acciones después de ganar -->
         <a href="{{ path('app_pokedex_uplevel', {'id': fight.winner == fight.pokedexPlayerOne.id ? fight.pokedexPlayerOne.id : fight.pokedexPlayerTwo.id}) }}" class="action-button">Subir Nivel</a>
         <a href="{{ path('app_pokedex_catch', {'id': fight.winner == fight.pokedexPlayerOne.id ? fight.pokedexPlayerTwo.pokemon.id : fight.pokedexPlayerOne.pokemon.id}) }}" class="action-button">Intentar capturar Pokémon enemigo</a>
+         
+         <form method="GET" action="{{ path('app_pokedex_heal') }}">
+        <select name="pokedex" class="form-control">
+        {% for pokemon in injuredPokemons %}
+            <option value="{{ pokemon.id }}">{{ pokemon.pokemon.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="action-button">Curar</button>
+    </form>
 
-        {# TODO: Revivir Pokémon #}
-        {# <p>Revivir un Pokémon</p> #}
-        {# <a href="{{ path('app_pokedex_revive', {'id': fight.winner == fight.pokedexPlayerOne.id ? fight.pokedexPlayerOne.pokemon.id : fight.pokedexPlayerTwo.pokemon.id}) }}">Revivir Pokémon</a> #}
-
+        {# <a href="{{ path('app_pokedex_heal', {'id': fight.winner == fight.pokedexPlayerOne.id ? fight.pokedexPlayerOne.pokemon.id : fight.pokedexPlayerTwo.pokemon.id}) }}" class="action-button">Revivir Pokémon</a> #}
     {% else %}
         <p class="result-message failure">Has perdido el combate...</p>
         <a href="{{ path('app_main') }}" class="action-button">Volver al Inicio</a>
