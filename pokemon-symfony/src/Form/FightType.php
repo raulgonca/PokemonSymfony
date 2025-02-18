@@ -6,7 +6,6 @@ use App\Entity\Fight;
 use App\Entity\Pokedex;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,8 +22,6 @@ class FightType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $user = $this->security->getUser();
-
         $builder
             ->add('pokedex_player_one', EntityType::class, [
                 'class' => Pokedex::class,

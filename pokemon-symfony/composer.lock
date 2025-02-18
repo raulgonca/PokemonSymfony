@@ -2907,13 +2907,17 @@
         {
             "name": "phpstan/phpdoc-parser",
             "version": "2.0.1",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
                 "reference": "72e51f7c32c5aef7c8b462195b8c599b11199893"
+                "reference": "72e51f7c32c5aef7c8b462195b8c599b11199893"
             },
             "dist": {
                 "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/72e51f7c32c5aef7c8b462195b8c599b11199893",
+                "reference": "72e51f7c32c5aef7c8b462195b8c599b11199893",
                 "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/72e51f7c32c5aef7c8b462195b8c599b11199893",
                 "reference": "72e51f7c32c5aef7c8b462195b8c599b11199893",
                 "shasum": ""
@@ -2948,7 +2952,9 @@
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
                 "source": "https://github.com/phpstan/phpdoc-parser/tree/2.0.1"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.0.1"
             },
+            "time": "2025-02-13T12:25:43+00:00"
             "time": "2025-02-13T12:25:43+00:00"
         },
         {
@@ -8762,18 +8768,23 @@
         {
             "name": "twig/extra-bundle",
             "version": "v3.20.0",
+            "version": "v3.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/twig-extra-bundle.git",
+                "reference": "9df5e1dbb6a68c0665ae5603f6f2c20815647876"
                 "reference": "9df5e1dbb6a68c0665ae5603f6f2c20815647876"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/9df5e1dbb6a68c0665ae5603f6f2c20815647876",
                 "reference": "9df5e1dbb6a68c0665ae5603f6f2c20815647876",
+                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/9df5e1dbb6a68c0665ae5603f6f2c20815647876",
+                "reference": "9df5e1dbb6a68c0665ae5603f6f2c20815647876",
                 "shasum": ""
             },
             "require": {
+                "php": ">=8.1.0",
                 "php": ">=8.1.0",
                 "symfony/framework-bundle": "^5.4|^6.4|^7.0",
                 "symfony/twig-bundle": "^5.4|^6.4|^7.0",
@@ -8820,6 +8831,7 @@
             ],
             "support": {
                 "source": "https://github.com/twigphp/twig-extra-bundle/tree/v3.20.0"
+                "source": "https://github.com/twigphp/twig-extra-bundle/tree/v3.20.0"
             },
             "funding": [
                 {
@@ -8832,25 +8844,32 @@
                 }
             ],
             "time": "2025-02-08T09:47:15+00:00"
+            "time": "2025-02-08T09:47:15+00:00"
         },
         {
             "name": "twig/twig",
             "version": "v3.20.0",
+            "version": "v3.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
+                "reference": "3468920399451a384bef53cf7996965f7cd40183"
                 "reference": "3468920399451a384bef53cf7996965f7cd40183"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/twigphp/Twig/zipball/3468920399451a384bef53cf7996965f7cd40183",
                 "reference": "3468920399451a384bef53cf7996965f7cd40183",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3468920399451a384bef53cf7996965f7cd40183",
+                "reference": "3468920399451a384bef53cf7996965f7cd40183",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.1.0",
+                "php": ">=8.1.0",
                 "symfony/deprecation-contracts": "^2.5|^3",
                 "symfony/polyfill-ctype": "^1.8",
+                "symfony/polyfill-mbstring": "^1.3"
                 "symfony/polyfill-mbstring": "^1.3"
             },
             "require-dev": {
@@ -8899,6 +8918,7 @@
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
                 "source": "https://github.com/twigphp/Twig/tree/v3.20.0"
+                "source": "https://github.com/twigphp/Twig/tree/v3.20.0"
             },
             "funding": [
                 {
@@ -8910,6 +8930,7 @@
                     "type": "tidelift"
                 }
             ],
+            "time": "2025-02-13T08:34:43+00:00"
             "time": "2025-02-13T08:34:43+00:00"
         },
         {
@@ -9098,13 +9119,17 @@
         {
             "name": "myclabs/deep-copy",
             "version": "1.13.0",
+            "version": "1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
                 "reference": "024473a478be9df5fdaca2c793f2232fe788e414"
+                "reference": "024473a478be9df5fdaca2c793f2232fe788e414"
             },
             "dist": {
                 "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/024473a478be9df5fdaca2c793f2232fe788e414",
+                "reference": "024473a478be9df5fdaca2c793f2232fe788e414",
                 "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/024473a478be9df5fdaca2c793f2232fe788e414",
                 "reference": "024473a478be9df5fdaca2c793f2232fe788e414",
                 "shasum": ""
@@ -9146,6 +9171,7 @@
             "support": {
                 "issues": "https://github.com/myclabs/DeepCopy/issues",
                 "source": "https://github.com/myclabs/DeepCopy/tree/1.13.0"
+                "source": "https://github.com/myclabs/DeepCopy/tree/1.13.0"
             },
             "funding": [
                 {
@@ -9153,6 +9179,7 @@
                     "type": "tidelift"
                 }
             ],
+            "time": "2025-02-12T12:17:51+00:00"
             "time": "2025-02-12T12:17:51+00:00"
         },
         {
