@@ -140,21 +140,17 @@ final class PokedexController extends AbstractController
         return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/heal', name: 'app_pokedex_heal', methods: ['GET'])]
-    public function healOne(EntityManagerInterface $entityManager, Request $request, PokedexRepository $pokedexRepository): Response
+    #[Route('/heal/{id}', name: 'app_pokedex_heal', methods: ['GET', 'POST'])]
+    public function heal(Pokedex $pokedex, EntityManagerInterface $entityManager): Response
     {
-        if ($request->isMethod('GET')) {
-            $pokemonId = $request->query->get('pokedex'); // Asegurar que obtiene el ID del formulario
-            $pokedex = $pokedexRepository->find($pokemonId);
+        // Curar al Pokémon
+        $pokedex->setStatus('sano');
+        $entityManager->flush();
 
-            if ($pokedex) {
-                $pokedex->setStatus('sano');
-                $entityManager->flush();
-            }
+        // Mensaje de éxito
+        $this->addFlash('success', 'El Pokémon ha sido curado exitosamente.');
 
-            return $this->redirectToRoute('app_main'); // O la vista donde se refleje el cambio
-        }
-
+        // Redirigir a la página principal
         return $this->redirectToRoute('app_main');
     }
 }
