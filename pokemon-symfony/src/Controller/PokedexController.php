@@ -132,6 +132,9 @@ final class PokedexController extends AbstractController
     public function upLevel(Pokedex $pokedex, EntityManagerInterface $entityManager,)
     {
         $pokedex->setPokemonLevel($pokedex->getPokemonLevel() + 1);
+
+        $this->checkAndEvolvePokemon($pokedex);
+
         $entityManager->flush();
 
         return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);

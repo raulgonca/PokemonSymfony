@@ -1,58 +1,104 @@
 {% extends 'base.html.twig' %}
-{% block title %}Pokedex{% endblock %}
+{% block title %}Pokémon Capturados{% endblock %}
 {% block body %}
 <style>
-    /* Estilo para el contenedor principal */
-    .pokemon-container {
-        display: flex; /* Habilita Flexbox */
-        flex-wrap: wrap; /* Permite que los elementos se ajusten en múltiples filas si no caben */
-        gap: 1rem; /* Espacio entre los Pokémon */
-       
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f8f9fa; 
     }
-
-    /* Estilo para cada carta de Pokémon */
-    .card {
-        margin: 1rem;
+    a {
+        text-decoration: none;
+        color: #007bff;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color:white; 
+    }
+    .pokedex-container {
         display: flex;
-        flex-direction: column; 
-        align-items: center; 
-        text-align: center; 
-        width: 150px; 
-        height: 150px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
     }
-
-    .card-body {
-        border: 1px solid black;
-        padding: 1rem;
-        width: 100%; /* Asegura que el cuerpo ocupe todo el ancho de la carta */
+    .pokemon-card {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 250px;
+        padding: 15px;
+        text-align: center;
+        transition: transform 0.2s ease-in-out;
     }
-
-    .card img {
-        width: 100%; /* Ajusta la imagen al ancho de la carta */
-        height: auto; /* Mantiene la proporción de la imagen */
+    .pokemon-card:hover {
+        transform: scale(1.05);
+    }
+    .pokemon-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+    .pokemon-card h3 {
+        margin: 10px 0;
+        font-size: 18px;
+        color: #343a40;
+    }
+    .pokemon-card p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #6c757d;
+    }
+    .actions {
+        margin-top: 10px;
+    }
+    .actions a {
+        margin: 0 5px;
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+        font-size: 12px;
+        text-decoration: none;
+        transition: background-color 0.2s ease-in-out;
+    }
+    .actions a:hover {
+        background-color: #0056b3;
+    }
+    @media (max-width: 768px) {
+        .pokemon-card {
+            width: 100%;
+        }
     }
 </style>
 
-<div class="container">
-    <a href="{{ path('app_main') }}">Inicio</a>
-    <h1>Aquí podrás ver los Pokémon que has capturado!!</h1>
+<a href="{{ path('app_main') }}" style=" margin-bottom: 20px;">
+    <button style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        Volver al Inicio
+    </button>
+</a>
 
-    <!-- Contenedor principal para los Pokémon -->
-    <div class="pokemon-container">
-        {% for pokedex in pokedexes %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ pokedex.pokemon.name }}</h5>
-                <p class="card-text">Tipo: {{ pokedex.pokemon.type }}</p>
-                <p class="card-text">Pokedex Nº: {{ pokedex.pokemon.number }}</p>
-                <p class="card-text">Nivel: {{ pokedex.pokemonLevel }}</p>
-                <p class="card-text">Fuerza: {{ pokedex.pokemonStrength }}</p>
-                <img src="{{ asset('uploads/images/' ~ pokedex.pokemon.image) }}" alt="{{ pokedex.pokemon.name }}" />
+<h1>Tus Pokémon Capturados</h1>
 
-                <a href="{{ path('app_pokedex_train', { id: pokedex.id }) }}">Entrenar</a>
-            </div>
+<div class="pokedex-container">
+    {% for pokedex in pokedexes %}
+    <div class="pokemon-card">
+        <img src="{{ asset('uploads/images/' ~ pokedex.pokemon.image) }}" alt="{{ pokedex.pokemon.name }}">
+        <h3>{{ pokedex.pokemon.name }}</h3>
+        <p><strong>Tipo:</strong> {{ pokedex.pokemon.type }}</p>
+        <p><strong>Número:</strong> {{ pokedex.pokemon.number }}</p>
+        <p><strong>Nivel:</strong> {{ pokedex.pokemonLevel }}</p>
+        <p><strong>Fuerza:</strong> {{ pokedex.pokemonStrength }}</p>
+        <p><strong>Estado:</strong> {{ pokedex.status }}</p>
+        <div class="actions">
+            <a href="{{ path('app_pokedex_train', { id: pokedex.id }) }}">Entrenar</a>
         </div>
-        {% endfor %}
     </div>
+    {% else %}
+    <p style="text-align: center; width: 100%; color: #6c757d;">No has capturado ningún Pokémon aún.</p>
+    {% endfor %}
 </div>
 {% endblock %}

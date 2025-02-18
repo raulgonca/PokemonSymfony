@@ -1,30 +1,106 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Combate Pokemon{% endblock %}
-
+{% block title %}Combate Pokémon{% endblock %}
+{% block stylesheets %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .fight-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .fight-container h1 {
+            color: #FFD700;
+            font-size: 2rem;
+            margin-bottom: 24px;
+            text-shadow: 
+                2px 2px 0 #2563eb,
+                -2px -2px 0 #2563eb,
+                2px -2px 0 #2563eb,
+                -2px 2px 0 #2563eb;
+        }
+        .fight-info {
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+            color: #333;
+        }
+        .result-message {
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+        }
+        .success {
+            color: #16a34a;
+        }
+        .failure {
+            color: #dc2626;
+        }
+        .action-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 8px;
+            background: #FFD700;
+            color: black;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .action-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+{% endblock %}
 {% block body %}
-<div class="container">
-    <a href="{{ path('app_main') }}">Inicio</a>
-    <br><br>
-    <h1>Combate Pokemon</h1>
-    <p>{{ fight.pokedexPlayerOne.pokemon.name }} (Jugador 1) VS {{ fight.pokedexPlayerTwo.pokemon.name }} (Jugador 2)</p>
-    <br><br>
+<div class="fight-container">
+    <!-- Botón para volver -->
+    <a href="{{ path('app_main') }}" class="back-button">Inicio</a>
 
+    <h1>Combate Pokémon</h1>
+
+    <!-- Información del combate -->
+    <p class="fight-info">
+        {{ fight.pokedexPlayerOne.pokemon.name }} (Jugador 1) VS {{ fight.pokedexPlayerTwo.pokemon.name }} (Jugador 2)
+    </p>
+
+    <!-- Resultado del combate -->
     {% if (fight.winner == fight.pokedexPlayerOne.id and fight.pokedexPlayerOne.user == app.user) or (fight.winner == fight.pokedexPlayerTwo.id and fight.pokedexPlayerTwo.user == app.user) %}
-        <p>¡Has ganado el combate!</p>
-        <br><br>
-        <a href="{{ path('app_pokedex_uplevel', {'id': fight.winner == fight.pokedexPlayerOne.id ? fight.pokedexPlayerOne.id : fight.pokedexPlayerTwo.id}) }}">Subir Nivel</a>
-        <br><br>
-        <a href="{{ path('app_pokedex_catch', {'id': fight.winner == fight.pokedexPlayerOne.id ? fight.pokedexPlayerTwo.pokemon.id : fight.pokedexPlayerOne.pokemon.id}) }}">Intentar capturar pokemon enemigo</a>
-        <br><br>
+        <p class="result-message success">¡Has ganado el combate!</p>
+
+        <!-- Acciones después de ganar -->
+        <a href="{{ path('app_pokedex_uplevel', {'id': fight.winner == fight.pokedexPlayerOne.id ? fight.pokedexPlayerOne.id : fight.pokedexPlayerTwo.id}) }}" class="action-button">Subir Nivel</a>
+        <a href="{{ path('app_pokedex_catch', {'id': fight.winner == fight.pokedexPlayerOne.id ? fight.pokedexPlayerTwo.pokemon.id : fight.pokedexPlayerOne.pokemon.id}) }}" class="action-button">Intentar capturar Pokémon enemigo</a>
+
         {# TODO: Revivir Pokémon #}
         {# <p>Revivir un Pokémon</p> #}
         {# <a href="{{ path('app_pokedex_revive', {'id': fight.winner == fight.pokedexPlayerOne.id ? fight.pokedexPlayerOne.pokemon.id : fight.pokedexPlayerTwo.pokemon.id}) }}">Revivir Pokémon</a> #}
-        <br><br>
+
     {% else %}
-        <p>Has perdido el combate...</p>
-        <br><br>
-        <a href="{{ path('app_main') }}">Volver al Inicio</a>
+        <p class="result-message failure">Has perdido el combate...</p>
+        <a href="{{ path('app_main') }}" class="action-button">Volver al Inicio</a>
     {% endif %}
 </div>
 {% endblock %}

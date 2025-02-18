@@ -1,12 +1,102 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}New Fight{% endblock %}
-
+{% block title %}Nueva Batalla{% endblock %}
+{% block stylesheets %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .form-container h1 {
+            color: #FFD700;
+            font-size: 2rem;
+            margin-bottom: 24px;
+            text-shadow: 
+                2px 2px 0 #2563eb,
+                -2px -2px 0 #2563eb,
+                2px -2px 0 #2563eb,
+                -2px 2px 0 #2563eb;
+        }
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: none;
+            border-radius: 8px;
+            background: #f9f9f9;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        .form-control:focus {
+            background: #e9ecef;
+            outline: none;
+        }
+        .btn-primary {
+            background: #FFD700;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 16px;
+        }
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .error {
+            background: #EF4444;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+    </style>
+{% endblock %}
 {% block body %}
-    <h1>Nueva batalla</h1>
+<div class="form-container">
+    <h1>Nueva Batalla</h1>
 
+    <!-- Mostrar errores de formulario si existen -->
+    {% if errors is defined and errors|length > 0 %}
+        <div class="error">
+            {{ errors|join('<br>') }}
+        </div>
+    {% endif %}
+
+    <!-- Incluir el formulario -->
     {{ include('fight/_form.html.twig') }}
 
-    <a href="{{ path('app_main') }}">Volver a inicio</a>
+    <!-- Botón para volver -->
+    <a href="{{ path('app_main') }}" class="back-button">Volver a inicio</a>
+</div>
 {% endblock %}
-    
