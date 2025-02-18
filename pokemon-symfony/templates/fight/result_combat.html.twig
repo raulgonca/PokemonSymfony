@@ -59,26 +59,10 @@
             transform: scale(1.05);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.9);
-            color: black;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .back-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        }
     </style>
 {% endblock %}
 {% block body %}
 <div class="fight-container">
-    <!-- Botón para volver -->
-    <a href="{{ path('app_main') }}" class="back-button">Inicio</a>
-
     <h1>Combate Pokémon</h1>
 
     <!-- Información del combate -->
