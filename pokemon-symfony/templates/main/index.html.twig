@@ -165,9 +165,14 @@
                 <div class="card-text">BATALLA ONLINE</div>
                 <div class="card-hint">Compite contra otros entrenadores</div>
             </a>
-
-            <a href="{{ path('app_pokedex_index') }}" class="card">
+            <br/>
+            <a href="{{ path('app_pokemon_index') }}" class="card">
                 <div class="card-icon icon-silhouette">📖</div>
+                <div class="card-text">LISTA DE POKEMON</div>
+                <div class="card-hint">Ver pokemon disponibles</div>
+            </a>
+            <a href="{{ path('app_pokedex_index') }}" class="card">
+                <div class="card-icon icon-silhouette">🖥️</div>
                 <div class="card-text">POKÉMON CAPTURADOS</div>
                 <div class="card-hint">Ver tu colección</div>
             </a>
@@ -195,6 +200,7 @@
     {% else %}
         <h1 class="subtitle">¡Bienvenido a Pokémon en Symfony!</h1>
         <a href="{{ path('app_login') }}" class="login-button">Iniciar Sesión</a>
+        <a href="{{ path('app_register') }}" class="login-button">Registrarse</a>
     {% endif %}
 </div>
 {% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+{% block title %}Capturar Pokémon{% endblock %}
+{% block stylesheets %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2563eb, #1c1917);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .capture-container {
+            position: relative; /* Necesario para posicionar el botón "Volver" */
+            background: rgba(255, 255, 255, 0.9);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .capture-container h1 {
+            color: #FFD700;
+            font-size: 2rem;
+            margin-bottom: 24px;
+            text-shadow: 
+                2px 2px 0 #2563eb,
+                -2px -2px 0 #2563eb,
+                2px -2px 0 #2563eb,
+                -2px 2px 0 #2563eb;
+        }
+        .message {
+            font-size: 1.2rem;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            color: white;
+        }
+        .success {
+            background: #16a34a;
+        }
+        .failure {
+            background: #dc2626;
+        }
+        .back-button {
+            position: absolute; /* Posicionamiento absoluto */
+            top: 16px; /* Padding vertical */
+            left: 16px; /* Padding horizontal */
+            padding: 8px 16px; /* Tamaño del botón */
+            background: rgba(255, 255, 255, 0.9);
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<div class="capture-container">
+    <!-- Botón para volver -->
+    <a href="{{ path('app_main') }}" class="back-button">Volver</a>
+    
+    <h1>Resultado de la captura</h1>
+    
+    <!-- Mostrar resultado -->
+    {% if resultado is defined %}
+        {% if resultado == 'exito' %}
+            <div class="message success">
+                ¡Has capturado un {{ pokedex.pokemon.name }}! 🙂
+            </div>
+        {% elseif resultado == 'fracaso' %}
+            <div class="message failure">
+                El Pokémon ha escapado... ☹️
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

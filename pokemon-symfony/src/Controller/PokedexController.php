@@ -93,7 +93,7 @@ final class PokedexController extends AbstractController
 
             $resultado = 'exito';
         }
-        return $this->render('main/capture.html.twig', ['resultado' => $resultado, 'pokedex' => $pokedex]);
+        return $this->render('main/captureResult.html.twig', ['resultado' => $resultado, 'pokedex' => $pokedex]);
     }
 
     #[Route('/{id}/train', name: 'app_pokedex_train', methods: ['GET', 'POST'])]
