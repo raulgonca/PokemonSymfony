@@ -135,7 +135,7 @@ final class FightController extends AbstractController
 
         // Obtener la lista de Pokémon del usuario actual
         $user = $this->getUser();
-        $userPokedex = $pokedexRepository->findPokedexesByUser($user);
+        $userPokedex = $pokedexRepository->findPokedexesByUserAndStatus($user, "sano");
 
         // Manejo del formulario
         if ($request->isMethod('POST')) {
